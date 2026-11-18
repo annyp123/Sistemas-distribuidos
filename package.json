@@ -1,0 +1,14 @@
+{
+  "name": "picas-y-fijas",
+  "version": "1.0.0",
+  "description": "API REST y cliente de consola de Picas y Fijas para el curso de Sistemas Distribuidos",
+  "main": "servidor/arranque.js",
+  "scripts": {
+    "start": "node servidor/arranque.js",
+    "cliente": "node cliente/iniciar.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.12.0"
+  }
+}

@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: picasyfijas
+      POSTGRES_PASSWORD: picasyfijas
+      POSTGRES_DB: picasyfijas
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./servidor/basedatos/esquema.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U picasyfijas"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: dhanielt/picas-y-fijas:latest
+    build: .
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: picasyfijas
+      DB_PASSWORD: picasyfijas
+      DB_NAME: picasyfijas
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  cliente:
+    image: dhanielt/picas-y-fijas:latest
+    environment:
+      URL_API: http://app:3000
+    depends_on:
+      - app
+    stdin_open: true
+    tty: true
+    command: ["node", "cliente/iniciar.js"]
+    profiles: ["cliente"]
+
+volumes:
+  pgdata:

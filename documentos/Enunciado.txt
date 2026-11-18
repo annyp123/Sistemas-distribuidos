@@ -1,0 +1,40 @@
+Juego “Picas y Fijas” versión distribuida.
+Versión original:
+En una hoja de papel, cada uno de los jugadores escribe un número secreto de 4 dígitos. Las
+cifras deben ser todas diferentes. Luego, a su vez, los jugadores tratan de adivinar el
+número de su oponente, que da el número de aciertos. Si las cifras son coincidentes en sus
+posiciones correctas, son "fijas"(o bulls), si en diferentes posiciones, son "picas"(o cows).
+Ejemplo:
+El número secreto: 4271 Intento del oponente: 1234 Respuesta: una fija y dos picas. (La fija
+es "2", las picas son "4" y "1".)
+
+El primero en revelar el número secreto del otro, gana el juego. 
+
+
+Versión Distribuida:
+
+Debe funcionar sobre Kubernetes
+
+EndPoints 
+
+/login <- POST (iniciar, registra el nombre del jugador)
+/juego <- POST  (crear, permite al jugador crear un juego, indica el número, valida que cumpla con reglas)
+/juego/{ID} <- PUT (unirse a un juego, el jugador envia su nombre y número)
+/juego/{ID}/jugar <- POST (jugar, permite enviar el numero y recibir respuesta, solo si es su turno, el sistema alterna por turnos, el primero en jugar se escoge de forma aleatoria)
+/juego/{ID} GET  <- ver. Estado (lista los juegos, sin completar, terminado, en juego, si es terminado indica quien gano)
+/juego <- GET (listar los juegos, completados, por iniciar, quien los inició)
+
+
+El jugador puede iniciar un juego o unirse a uno existente.
+Cuando inicia el juego cualquiera se puede unir
+Al unirse el segundo jugador el juego inicia
+En cualquier momento se pueden ver los estados de los juegos
+El servicio debe validar la entrada del número (que no tenga texto, digitos repetidos, sean 4 digitos, etc)
+
+Condiciones técnicas
+Restful con JSON para serialización
+Cualquier lenguaje / Framework
+No es necesaria BD
+Front básico para probar
+Debe ser entregado en git (github, gitlab, repo público), sustentado
+Debe permitir el despliegue en kubernetes (killercoda por ejemplo)
